@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">WeatherInfoMap</string>
+    <string name="riquest">天気を更新</string>
+    <string name="current">上段</string>
+    <string name="fore_cast">下段</string>
+    <string name="wakkanai">稚内</string>
+    <string name="asahikawa">旭川</string>
+    <string name="abashiri">網走</string>
+    <string name="kushiro">釧路</string>
+    <string name="obihiro">帯広</string>
+    <string name="urakawa">浦河</string>
+    <string name="sapporo">札幌</string>
+    <string name="hakodate">函館</string>
+    <string name="whereGoing">ドコイク？</string>
+    <string name="sunriseTime">日の出時間</string>
+    <string name="sunrise">暁</string>
+    <string name="sunset">宵</string>
+    <string name="sunsetTime">日の入時間</string>
+    <string name="cityName">都市</string>
+    <string name="whatTime">時間</string>
+    <string name="fickle">時間天気</string>
+    <string name="celsius">摂氏気温</string>
+</resources>
