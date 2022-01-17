@@ -1,12 +1,9 @@
 package com.stickynote.ttmiwn.myweatherinfo;
 
-//　💮　分割成功
-
 import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import androidx.annotation.UiThread;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Web APIから取得したJSON文字列・天気情報から、必要な値を取りだしHashMapに登録
-//
 
 final class ConversionJSON {
 
@@ -32,8 +28,8 @@ final class ConversionJSON {
     public ConversionJSON(String _result) {
 
         try {
-            // ルートJSONオブジェクトを生成。                                └root
-            // ￥ CityJSONオブジェクト　を rootから取得　改装を一段潜るイメージ  　└CityJSON　
+            // rootJSONオブジェクトを生成。                                └root
+            // CityJSONオブジェクト　を rootから取得　改装を一段潜るイメージ  　└CityJSON　
             // 都市名・日の出・日の入りを"getString"で取得　　　　　　　　　　　　  ・sunrise　7:00
             JSONObject rootJSON = new JSONObject(_result);
 
@@ -45,10 +41,10 @@ final class ConversionJSON {
             //　root下　"list"という名の『全ての時間帯天気詳細』を配列"getJSONArray"で取得
             JSONArray listJSONArray = rootJSON.getJSONArray("list");
 
-            // ￥ 上記配列の一つ目"list Array[0]"選択　3時間区切りでもっとも近い時間の天気予報
+            // 上記配列の一つ目"list Array[0]"選択　3時間区切りでもっとも近い時間の天気予報
             JSONObject thisTimeJSON = listJSONArray.getJSONObject(0);
             String infoTime = thisTimeJSON.getString("dt_txt"); // 時刻習得
-            // ￥ "main"オブジェクト　気温、湿度　を取得
+            // "main"オブジェクト　気温、湿度　を取得
             JSONObject mainJSON = thisTimeJSON.getJSONObject("main");
             String temper = mainJSON.getString("temp");
             // 謎のweather配列を取得、一個目をオブジェクトに

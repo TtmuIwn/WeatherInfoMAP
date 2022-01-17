@@ -1,9 +1,5 @@
 package com.stickynote.ttmiwn.myweatherinfo;
 
-//　💮　無事稼働中 下記方法で変数一つ削れるが、難読
-// if (  (tmap.get(("icon")+i)).equals("01d") || (tmap.get(("icon")+i)).equals("01n")  ) {
-//        weatherIDs[i] = R.drawable.weather_01d;
-//        }
 
 
 import android.util.Log;
@@ -11,6 +7,8 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.Map;
 
+// 天気結果の数値により、アイコンをセットする
+// 夜用 "XXn（night）"には未対応
 final class IconSet {
 
     public int[] iconSet(Map<String,String> tmap){

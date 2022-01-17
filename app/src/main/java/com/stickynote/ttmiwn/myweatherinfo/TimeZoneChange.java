@@ -12,12 +12,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-//  (1)時間の型を設定
-//      (2) LDTime型に変換	(3) タイムゾーンをUTCに設定	(4) ZoneをJSTに変換+9時間
-//      (5) 日本時間に変換されたDATEを(1)で指定した形にStringで代入 "T[Asia/Tokyo]"等を省く
-//        日付データ 「2021-12-09 06:00:00」を「12/09 06時」に加工
-
-
 // JSONから抜き出した時間を意味する数列を、加工・変換するクラス
 // Java8.0以降から追加されたため @annotation が付属される
 

@@ -1,6 +1,5 @@
 package com.stickynote.ttmiwn.myweatherinfo;
 
-// 💮　無事稼働
 import android.os.Build;
 import android.view.View;
 
@@ -8,7 +7,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Map;
 
-// map立ち上げ時に検索する
+// GoogleMap立ち上げ時に検索する目的地を付随
+
 final class pressButtonProcess {
     static String serchCity = "";
     static String serchSpot = "";

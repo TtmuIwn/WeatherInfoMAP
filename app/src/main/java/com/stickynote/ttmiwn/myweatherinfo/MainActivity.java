@@ -1,30 +1,5 @@
 package com.stickynote.ttmiwn.myweatherinfo;
 
-//　忘備録
-// リダイレクト拒否設定　con.setInstanceFollowRedirects(false);
-//　findbyew のエラーは消せるが、 setする動作は厳しい
-
-// 内容変更時　天気予報、時間取得数増やすなら　int[]回数も
-
-// い：　天気情報を取得する
-// ろ：非同期処理を使わないと、外部接続してJSON持ってこれない
-//    private class BackgroundTask implements Runnable｛の　run｛　で持ってくる
-//      ここだけ、非同期処理すればOK！！！
-//      api.openweathermap.org/data/2.5/forecast?q={city name}&appid={API key}
-// は　　api.openweathermap.org/data/2.5/forecast?id={city ID}&appid={API key}
-
-
-// 非同期処理　weastherget　メソッド
-//　1）looper 処理終わったら確実にmainに帰ってくるためのキーアイテム　ここが君の帰る場所
-//　2）handler　スレッド間のデータ通信をしてくれるオブジェ　指揮官
-// 引数で戻るためのキーアイテムlooperを所持
-// 合体して　→ Handler handler = new Handler(Looper.getMainLooper());　もok！！
-
-// 1）runnable　class　を作成　実際の処理理内容を「自分で」記入
-// 2）ExecuterService　javaで用意されたクラス　シャットダウンできる　new
-// 3）submit（送信）method　を実行　引数として（1）を渡す
-
-
 import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
@@ -59,9 +34,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+// 44行目　    private static final String APP_ID = 【 BuildConfig.API_KEY 】;
+//  現在、個人の使用回数制限付きkeyを、別ファイルより設定中          　↑ ここを 英数字50桁ほどのKeyに変更
+// Open Weather Map https://openweathermap.org/  より、自分のAPI_KEYを取得して変更
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //
     private static final String WEATHERINFO_URL = "https://api.openweathermap.org/data/2.5/forecast?lang=ja&units=metric&cnt=6";
     private static final String APP_ID = BuildConfig.API_KEY;
 
@@ -74,10 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Map<String, String> hakodaDatas = new HashMap<>();
     Map<String, String> sappuDatas = new HashMap<>();
 
-    // アイコンID管理用配列
+//    アイコンID管理用配列
     int[] wakIcons, asaIcons, abaIcons, obiIcons, kusIcons, uraIcons, hakIcons, sapIcons ;
 
-    //　エラーログ
+//    エラーログ用
     private static final String DEBUG_TAG = "WetherInfo";
 
     @Override
@@ -85,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 各都市ボタンリスナー設定
         findViewById(R.id.wakkaBt).setOnClickListener(MainActivity.this);
         findViewById(R.id.asahiBt).setOnClickListener(MainActivity.this);
         findViewById(R.id.abaBt).setOnClickListener(MainActivity.this);
@@ -98,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         weatherGet();
     }
 
-    //非同期処理　天気確認ボタンonclick
+//    天気更新ボタン） 現在、使用意味あまりなし
     public void weatherUpdate(View view){
         weatherGet();
     }
@@ -107,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Looper looper = Looper.getMainLooper();
         Handler handler = HandlerCompat.createAsync(looper);
 
-        // OpenWeatherリクエスト用urlの設定 ID
+//        OpenWeatherリクエスト用urlに使用する、各都市の設定ID
         String[] ids = {"2127515","2130629","2130741", "2128815", "2129376", "2127586", "2130188", "2128295" } ;
         String[] urlFulls = new String[8] ;
 
@@ -115,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             urlFulls[i] =  WEATHERINFO_URL + "&id=" + ids[i] + "&appid=" + APP_ID;
         };
 
-        // "String[] ids" に登録した都市の回数分、"BackgroundTask"を実行
-        ExecutorService executor  = Executors.newCachedThreadPool();  // (2)新規スレッド作成
+//        "String[] ids" に登録した都市の回数分、"BackgroundTask"を実行
+        ExecutorService executor  = Executors.newCachedThreadPool();
         for(int i=0; urlFulls.length > i; i++){
-            BackgroundTask backgroundTask = new BackgroundTask(handler, urlFulls[i]);  // (3)
+            BackgroundTask backgroundTask = new BackgroundTask(handler, urlFulls[i]);
             executor.submit(backgroundTask);
         }
         executor.shutdown();
@@ -135,19 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             urlFull = url;
         }
 
-
-        // HTTP接続を行うHttpURLConnectionオブジェクトを宣言。finallyで解放するためにtry外で宣言。
-        // HTTP接続のレスポンスデータとして取得するInputStreamオブジェクトを宣言。同じくtry外で宣言。
-        // 天気情報サービスから取得したJSON文字列。天気情報が格納されている。
-        // URLオブジェクトからHttpURLConnectionオブジェクトを取得。
-        // 接続に使ってもよい時間を設定。 データ取得に使ってもよい時間。 HTTP接続メソッドをGETに設定。 接続。
-        // HttpURLConnectionオブジェクトからレスポンスデータを取得。
-        // レスポンスデータであるInputStreamオブジェクトを文字列に変換。
-
-        // is　処理は決り文句　難しい
-
-        //　非同期処理　@workerThread　ここから　
-
+//        HTTP接続を行う
+//        レスポンスデータであるInputStreamオブジェクトを文字列に変換。
         @WorkerThread
         @Override
         public void run() {
@@ -193,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             handler.post(postExecutor);
         }
 
+//        InputStream　定型処理
         final String is2String(InputStream is) throws IOException {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             StringBuffer sb = new StringBuffer();
@@ -205,13 +172,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-//　戻ってきたJSONを処理する
-//  Web APIから取得したお天気情報JSON文字列。
-
+//    Web APIから取得したお天気情報JSON文字列を処理
+//    if(cityName)により、セットするviewを確認
     final class PostExecutor implements Runnable {
 
         private final String result;
-
         public PostExecutor(String resu) {
             result = resu;
         }
@@ -373,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Arrays.fill(whichIcons, R.drawable.weather_frog);
         }
 
-        // 下段画面に、クリックされた都市の天気を出力
+//        下段画面に、クリックされた都市の天気を出力
         ((TextView) findViewById(R.id.locationTx)).setText(whichDatas.get("cityName"));
         ((TextView) findViewById(R.id.sunriseTx)).setText(whichDatas.get("sunrise"));
         ((TextView) findViewById(R.id.sunsetTx)).setText(whichDatas.get("sunset"));
@@ -395,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    // 検索ワード設定ボタン処理
+//    検索ワード設定ボタン処理
     public void serchButton(View view) {
 
         pressButtonProcess prs = new pressButtonProcess();
@@ -404,7 +369,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         serchTx.setText(serchSpot);
     }
 
-    // GoogleMap立ち上げ処理
+//    GoogleMap立ち上げ処理
+//    入力されたキーワードをURLエンコード。 マップアプリと連携するURI文字列を生成。
+//    URI文字列からURIオブジェクトを生成。　Intentオブジェクトを生成。 アクティビティを起動。
     public void mapSend(View view) {
 
         String mapSearchName = "北海道";
@@ -414,8 +381,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String spot = prs.getSerchSpot();
 
         try {
-            // 入力されたキーワードをURLエンコード。 マップアプリと連携するURI文字列を生成。
-            // URI文字列からURIオブジェクトを生成。　Intentオブジェクトを生成。 アクティビティを起動。
+
             mapSearchName = URLEncoder.encode(mapSearchName, "UTF-8");
             String uriStr = "geo:0,0?q=" + mapSearchName + spot;
             Uri uri = Uri.parse(uriStr);
