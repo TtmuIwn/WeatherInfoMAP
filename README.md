@@ -14,8 +14,6 @@
 ## 効果
 
 - 北海道経済の活性化
-- 
-- 
 
 https://user-images.githubusercontent.com/96857849/149710011-0442cea4-89a7-4973-a4c8-cde2437f9d8e.mp4
 
