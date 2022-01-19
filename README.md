@@ -3,7 +3,7 @@
 
 ## 概要
 
-北海道全体の大まかな天気予報と、GoogleMapの連携
+北海道全体の大まかな天気予報とGoogleMapの連携
 『Open Weather API』より天気予報を取得、目的都市とスポット名を選択し、GoogleMapにて検索する
 
 
